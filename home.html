@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- css file -->
+    <link rel="stylesheet" href="style.css">
+    <!-- meterial-icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+    <title>Google</title>
+</head>
+<body>
+
+    <div id="myModal" class="modal">
+        <h1 style="margin-left:25%;color:white;font-family:googleBold">History</h1>
+        <!-- Modal content -->
+        <div class="modal-content" >
+            <span class="close" style="position: sticky;top:0">&times;</span>
+            <div id="o">
+             
+            </div>
+
+        </div>
+      
+      </div>
+    <div class="profile_menu" id="profile_menu">
+        <div class="top">
+          
+            <button id="b2"style="width:fit-content;height:100%;background-color: rgb(211, 109, 109);border-radius: 0px 20px  0px 00px;border:none;margin-top: 0px;"  onclick="hover();"><i class="material-icons">close</i></button>
+
+        </div>
+        <div class="option">
+            <i class="material-icons">email</i>
+            <span id="email">email.com</span>
+        </div>
+        <div class="option" onclick="t()">
+            <i class="material-icons">home</i>
+           <span>Home</span>
+        </div>
+        <div class="option"  onclick="h()">
+            <i class="material-icons">history</i>
+            <span>History</span>
+        </div>
+      
+        <div class="option" onclick="logout()">
+            <i class="material-icons">logout</i>
+            <span>Logout</span>
+        </div>
+     
+    </div> 
+    
+
+    <div class="main">
+        <div class="user_info">
+            <button style="width:fit-content;height: fit-content;background-color: transparent;border:none;" onclick="popup()"><img src="" id="photo"style="width:40px;height:40px;border-radius:50%;margin-top: 35px;" /></button>
+           
+            <span style="color:white;margin-left:5px; margin-top: 27px; padding-left: 7px;" id="name"></span>
+        </div>
+        <div class="top">
+
+        </div>
+        <div class="middle">
+            <div class="name">
+                <div class="logo">
+             
+                    <span style="font-size:90px; color:rgb(66, 136, 244); margin:0; ">S</span>
+                    <span style="font-size:90px; color:rgb(234, 67, 53); margin:0px;">e</span>
+                    <span style="font-size:90px; color:rgb(251, 188, 5);margin:0px;">a</span>
+                    <span style="font-size:90px; color:rgb(66, 136, 244) ; margin:0px;">r</span>
+                    <span style="font-size:90px; color:rgb(52, 168,83); margin:0px;">c</span>
+                    <span style="font-size:90px; color:rgb(234, 67, 53); margin:0;">h</span> 
+                
+                </div>
+               
+            </div>
+           
+            <div class="search_section">
+
+                <div class="search">
+                    <div class="icon">
+                        <i class="material-icons">search</i>
+                    </div>
+                   <div class="bar">
+                    <input type="text" id="si">
+                   </div>
+                    <div class="mico">
+                       <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-25-512.png" style="width:30px;object-fit:contain;" alt="">
+                    </div>
+                </div>
+                <div class="btn">
+                    <button class="btns" id="sb" onclick="searching()">Search</button>
+                 
+                </div>
+
+            </div>
+        </div>
+        <script>
+        var session=localStorage.getItem("session");
+        if(session == "false")
+        {
+            location.href="index.html";
+        }
+
+        function t()
+        {
+                var y= document.getElementById("profile_menu")
+                y.style.visibility="hidden"
+        }
+         var modal = document.getElementById("myModal");
+       
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+        function h() {
+            var y= document.getElementById("profile_menu")
+                y.style.visibility="hidden"
+        modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+        modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+        }
+           
+            function logout()
+            {
+                firebase.auth().signOut().then(function()
+            {
+                console.log("Logout successfully");
+                location.href="index.html";
+                localStorage.clear();
+            }).catch(function (error){
+                console.log("error");
+            });
+            }
+            var uid=localStorage.getItem("uid");
+            console.log(uid);
+             const firebaseConfig = {
+            apiKey: "AIzaSyC9QRd3nieB5nY_feLIbRd2gbSowfVG3z4",
+            authDomain: "search-engine-1634620444383.firebaseapp.com",
+            projectId: "search-engine-1634620444383",
+            storageBucket: "search-engine-1634620444383.appspot.com",
+            messagingSenderId: "116134095393",
+            appId: "1:116134095393:web:a6bbc482ea15cc7c07d160",
+            measurementId: "G-DWDMTCRB7X"
+            };
+            firebase.initializeApp(firebaseConfig);
+            var db=firebase.firestore();
+            console.log("Initilized");
+            var hobj;
+            var hhtml="";
+            db.collection(uid).get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                // doc.data() is never undefined for query doc snapshots
+                hobj=doc.data();
+                hhtml+=`<h3> ${hobj.search}</h3>`
+            });
+            document.getElementById("o").innerHTML=hhtml;
+        });
+        
+            var uobj;
+            var docRef = db.collection("users").doc(uid);
+                docRef.get().then((doc) => {
+                    if (doc.exists) {
+                        uobj=doc.data();
+                        console.log(uobj.name);
+                        console.log(uobj.email);
+                        console.log(uobj.profileurl);
+                        document.getElementById("photo").src=uobj.profileurl;
+                        document.getElementById("name").innerHTML=uobj.name;
+                        document.getElementById("email").innerHTML=uobj.email;
+                    } else {
+                        
+                        console.log("No such document!");
+                    }
+                }).catch((error) => {
+                    console.log("Error getting document:", error);
+                });
+
+                
+           
+            function hover() {
+                
+                var y= document.getElementById("profile_menu")
+                y.style.visibility="hidden"
+                console.log(y);
+            }
+              function popup()
+                {
+                    var x=document.getElementById("profile_menu")
+                if(x.style.visibility='hidden')
+                {
+                    
+                    x.style.visibility="visible";
+                    }
+                    
+                
+                }
+
+            document.getElementById("si").addEventListener("keyup",function(event) 
+            {
+            
+                    if (event.keyCode === 13) 
+                    {
+                        if(document.getElementById("si").value != "")
+                        {
+                            event.preventDefault();
+                            document.getElementById("sb").click();
+                    
+                        }
+                }
+             
+            });
+    
+            function searching()
+            {
+                if(document.getElementById("si").value != "")
+                {
+                    location.href=('main.html');
+                    var search=document.getElementById("si").value
+                    console.log(search)
+                    localStorage.setItem("name",search)
+                }
+                
+            }
+         
+            </script>
+
+        <div class="bottom">
+                <div class="footer_top">
+                        <span>Search Engine</span>
+                </div>
+                <div class="footer_bottom">
+                    <center>
+                    <span>
+                        Developed 
+                    </span>
+                    <span>
+                        By:
+                    </span>
+                    <span>
+                        Sohel 
+                    </span>
+                    <span>
+                        Satyajeet 
+                    </span>
+                    <span>
+                        Vijay
+                    </span>
+                    
+                </div>
+            </center>
+        </div>
+    </div>
+</body>
+</html>

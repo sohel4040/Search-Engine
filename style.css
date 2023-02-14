@@ -1,0 +1,268 @@
+body{
+font-family: googleBold;
+overflow-x: hidden;
+overflow-y:hidden ;
+margin:0;
+}
+@font-face {
+    font-family: googleRegular;
+    src: url(googlefont.ttf);
+}
+@font-face {
+    font-family: googleBold;
+    src: url(googlef.ttf);
+}
+.main
+{
+    
+    width:100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(30, 30, 30);
+   
+}
+.top{
+    width:100%;
+    height: 8%;
+    /* border: 2px solid blue; */
+}
+.middle
+{
+width: 100%;
+height:79%;
+
+align-items: center;
+text-align: center;
+justify-content: center;
+}
+.name
+{
+    margin-top: 30px;
+    width: 100%;
+    height: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.user_info
+{
+    display: flex;
+    align-items: center;
+   min-width: 104px;
+  
+}
+.logo
+{
+    width: fit-content;
+    height:fit-content;
+    align-items: center;
+    font-family: googleRegular;
+}
+.search_section
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(30, 30, 30);
+}
+.search
+{
+display: flex;
+width:40%;
+min-width: 460px;
+height:40px;
+background-color: rgb(60,60,60);
+border-radius: 50px;
+transition: 100ms ease-in;
+/* box-shadow: 2px 1px 5px 5px whitesmoke; */
+}
+.search:hover{
+    box-shadow: 0px 1px 6px 1px rgb(22, 22, 22);
+    
+    
+}
+.icon{
+width: 40px;
+text-align: center;
+
+
+}
+.icon i
+{
+    font-size: 20px;
+    margin-top: 9px;
+    margin-left: 2px;
+    color:rgb(154, 160, 166);
+}
+.bar
+{
+width:85%;
+height:95%;
+background-color: rgb(60,60,60);
+
+}
+.bar input
+{
+width:100%;
+height:90%;
+font-size: 15px;
+font-family: googleRegular;
+outline: none;
+border: none;
+color:whitesmoke;
+background-color: rgb(60,60,60);
+}
+.mico
+{
+    width:30px;
+    height:30px;
+    padding:5px;
+    
+    padding-right:10px;
+    
+}
+.btns{
+    margin-top: 30px;
+    margin-left:5px;
+    border: none;
+    width: 150px;
+    height: 40px;  
+    color: whitesmoke;
+    background-color: rgb(60,60,60);
+    border-radius: 4px;
+}
+.btns:hover{
+    border: 1px solid rgb(199, 199, 199); 
+}
+.text
+{
+    padding:10px;
+    margin-top:5px;
+    font-size: 14px;
+    font-family: googleRegular;
+}
+.t1
+{
+    margin-right:5px;
+}
+.t2
+{
+    word-spacing: 9px;
+    margin:5px;
+    color:darkblue;
+}
+.bottom{
+    width:100vw;
+    height:13%;
+    display:flex;
+    flex-direction: column;
+    background-color: rgb(60, 60, 60);
+    
+}
+.footer_top{
+    width: 100%;
+    height:30% ;
+    color: gray;
+   
+    font-family: googleRegular;
+    background-color: rgb(60, 60, 60);
+    padding:10px;
+    border-bottom: 0.5px solid rgb(95, 95, 95);
+}
+.footer_bottom
+{
+    width: 100%;
+    height:30%;
+    font-size: 14px;
+    word-spacing: 20px;
+    color: gray;
+    font-family: googleRegular;
+    background-color: rgb(60, 60, 60);
+    padding:10px;
+   
+}
+.profile_menu
+{
+    width:fit-content;
+    max-width: fit-content;
+    visibility: hidden;
+    height:fit-content;
+    background-color:#2b2b2b;
+    border-radius: 20px;
+    position:absolute;
+    top:100px;
+    z-index:999;
+    box-shadow: 1px 1px 10px 5px rgb(0, 0, 0,0.5);
+    padding-bottom: 10px;
+    left:20px;
+    display: flex;
+    /* left:400px; */
+    flex-direction: column;
+}
+.option{
+    display: flex;
+    flex-direction: row;
+   align-items: center;
+   /* justify-content: center; */
+   color:whitesmoke;
+width:match-parent;
+align-content: center;
+padding-left: 50px;
+height:20px;
+padding-right:15px;
+padding-top:15px;
+padding-bottom:15px
+}
+.option i{
+font-size: 18px;
+}
+.option span{
+   margin-left: 10px;
+}
+.option:hover{
+   background-color:rgb(59, 59, 59);
+   border-radius:20px;
+}
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 50px; /* Location of the box */
+    left: 0;
+    top: 0%;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #5a5a5a;
+    margin: auto;
+    padding: 20px;
+    color:white;
+    border-radius:20px;
+    width: 50%;
+    height: 350px;
+    overflow: auto; /* Enable scroll if needed */
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }

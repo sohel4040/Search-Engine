@@ -1,0 +1,213 @@
+<html>
+<head>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+    <style>
+        body
+        {
+            background-color:rgb(22, 24, 29);
+            color:whitesmoke;
+        }
+        @font-face {
+    font-family: googleRegular;
+    src: url(googlefont.ttf);
+}
+@font-face {
+    font-family: googleBold;
+    src: url(googlef.ttf);
+}
+#myVideo {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index:-11;
+}
+
+#t
+{
+    width:100%;
+    display:flex;
+    justify-content: space-between;
+}
+#con
+{
+   
+    background-color:rgb(22, 24, 29);
+    padding:30px;
+    max-width: fit-content;
+    border-radius:20px;
+    border:1px solid gray;
+    font-family:googleRegular;
+}
+#f
+{
+    height:100%;
+    border:1px solid gray;
+    border-radius:30px;
+}
+    </style>
+</head>
+
+<body>
+    <video autoplay muted loop id="myVideo">
+        <source src="bg.mp4" type="video/mp4">
+      </video>
+    <center>
+        <div id="main" style="margin-top:7%">
+            <img src="web-search-engine.png" alt="" style="width:100px;">
+            <h3 style="font-family:googleBold;font-size:25px">Search Engine</h3>
+            <div id="b" style="width:260px;display: Flex;flex-direction: row;
+            padding:8px;background-color: rgb(33, 147, 253);border:1px solid black;border-radius: 30px;">
+                <img src="google.png" alt="" style="width:40px;height:40px;border-radius:20px;">
+                <button onclick="signin()" style="width:200px;border:none;background-color: rgb(33, 147, 253);font-family:googleRegular;color:white;font-size:18px">Sign Up with Google</button>
+            </div>
+            <br>
+            <br>
+            <div id="b" style="width:260px;display: Flex;flex-direction: row;
+            padding:8px;background-color: rgb(255, 255, 255);border:1px solid black;border-radius: 30px;">
+                <img src="google.png" alt="" style="width:40px;height:40px;border-radius:20px;">
+                <button onclick="login()" style="width:200px;border:none;background-color: rgb(255, 255, 255);font-family:googleRegular;color:rgb(33, 147, 253);font-size:18px">Login in with Google</button>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+    </center>
+
+    <div id="t">
+        <div id="con">
+            <span id="text">Developers:</span><br>
+            <span id="text">Vijay Mali</span><br>
+            <span id="text">Satyajeet Gaikwad</span><br>
+            <span id="text">Sohel Bargir</span>
+           
+        </div>
+    
+        <div id="f">
+            <img src="firebase-logo.png" alt="" style="width:250px;border-radius:30px;align-self: flex-end;">  
+        </div>
+    </div>
+   
+    </div>
+    <script>
+        localStorage.clear();
+        localStorage.setItem("session","false");
+
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+    apiKey: "AIzaSyC9QRd3nieB5nY_feLIbRd2gbSowfVG3z4",
+    authDomain: "search-engine-1634620444383.firebaseapp.com",
+    projectId: "search-engine-1634620444383",
+    storageBucket: "search-engine-1634620444383.appspot.com",
+    messagingSenderId: "116134095393",
+    appId: "1:116134095393:web:a6bbc482ea15cc7c07d160",
+    measurementId: "G-DWDMTCRB7X"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var db=firebase.firestore();
+    console.log("Initilized");
+  
+
+        function signin()
+        {
+            firebase.auth().signOut().then(function()
+            {
+                console.log("Logout successfully");
+            }).catch(function (error){
+                console.log("error");
+            });
+            var provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth()
+            .signInWithPopup(provider)
+            .then((result) => {
+             console.log(result);
+            var credential = result.credential;
+            var token = credential.accessToken;
+            var user = result.user;
+
+            // console.log(credential);
+            
+            db.collection("users").doc(user.uid).set({
+            name: user.displayName,
+            email: user.email,
+            profileurl: user.photoURL
+            })
+            .then(() => {
+            console.log("Document successfully written!");
+            })
+            .catch((error) => {
+            console.error("Error writing document: ", error);
+            });
+            console.log(token);
+            console.log(user.uid);
+            console.log(user.displayName);
+            console.log(user.email);
+            console.log(user.photoURL);
+            if(user)
+            {
+               //  location.href="home.html";
+                localStorage.setItem("session",true);
+                localStorage.setItem("uid",user.uid);
+            }
+            }).catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            var email = error.email;
+            var credential = error.credential;
+        });
+        }
+
+        function login()
+        {
+            var provider = new firebase.auth.GoogleAuthProvider();
+        
+            
+            // console.log(provider);
+            firebase.auth()
+            .signInWithPopup(provider)
+            .then((result) => {
+             console.log(result);
+            var credential = result.credential;
+            var token = credential.accessToken;
+            var user = result.user;
+
+            // console.log(credential);
+            
+            db.collection("users").doc(user.uid).set({
+            name: user.displayName,
+            email: user.email,
+            profileurl: user.photoURL
+            })
+            .then(() => {
+            console.log("Document successfully written!");
+            })
+            .catch((error) => {
+            console.error("Error writing document: ", error);
+            });
+            console.log(token);
+            console.log(user.uid);
+            console.log(user.displayName);
+            console.log(user.email);
+            console.log(user.photoURL);
+            if(user)
+            {
+                location.href="home.html";
+                localStorage.setItem("session",true);
+                localStorage.setItem("uid",user.uid);
+            }
+            }).catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            var email = error.email;
+            var credential = error.credential;
+        });
+        }
+
+//         fetch("https://api.scaleserp.com/search?api_key=141D96272DBF4F9D8430EEA9A76249CA&q=pizza").then(res =>res.json()).then(data =>console.log(data));
+    </script>
+</body>
+</html>

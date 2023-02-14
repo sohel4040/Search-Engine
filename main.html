@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- css file -->
+    <link rel="stylesheet" href="main.css">
+
+    <!-- material icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <title>Google Search</title>
+
+</head>
+
+<body>
+    
+    <div class="app">
+        <div class="header">
+            <div class="logo">
+                <span style="font-size:30px; color:rgb(66, 136, 244); margin:0; ">S</span>
+                <span style="font-size:30px; color:rgb(234, 67, 53); margin:0px;">e</span>
+                <span style="font-size:30px; color:rgb(251, 188, 5);margin:0px;">a</span>
+                <span style="font-size:30px; color:rgb(66, 136, 244) ; margin:0px;">r</span>
+                <span style="font-size:30px; color:rgb(52, 168,83); margin:0px;">c</span>
+                <span style="font-size:30px; color:rgb(234, 67, 53); margin:0px;">h</span>
+            </div>
+            <div class="search_bar">
+                <input id="s" type="text">
+                
+                <!-- <img src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-25-512.png" style="width:30px;object-fit:contain;margin-left:5px;" alt=""> -->
+                <i class="material-icons" style="color:rgb(66, 136, 244);margin-left:20px;" onclick="searching()">search</i>
+            </div>
+            <div class="options">
+                   
+                    <img src="" alt="" style="width:40px;border-radius:50px" id="p">
+
+            </div>
+        </div>
+        <div class="options_bar">
+
+        </div>
+        <div class="app_body" id="appb">
+            <!-- <div class="info_results">
+                 <span id="results">About 21,16,00,00,000 results (0.46 seconds)</span>
+            </div> -->
+              <img src="load.gif" alt="" style="width:50px;margin-left:48.2%;margin-top:15%;">
+              <br>
+              <center>
+                  <span style="color:white;font-family: googleRegular;">Getting results...</span>
+              </center>
+        </div>
+    </div>
+    <!-- Script -->
+    <script>
+            var session=localStorage.getItem("session");
+            if(session =="false")
+            {
+                location.href="index.html"
+            }
+            const firebaseConfig = {
+            apiKey: "AIzaSyC9QRd3nieB5nY_feLIbRd2gbSowfVG3z4",
+            authDomain: "search-engine-1634620444383.firebaseapp.com",
+            projectId: "search-engine-1634620444383",
+            storageBucket: "search-engine-1634620444383.appspot.com",
+            messagingSenderId: "116134095393",
+            appId: "1:116134095393:web:a6bbc482ea15cc7c07d160",
+            measurementId: "G-DWDMTCRB7X"
+            };
+            firebase.initializeApp(firebaseConfig);
+            var db=firebase.firestore();
+            var uid=localStorage.getItem("uid");
+            var search1=localStorage.getItem("name");
+            db.collection(uid).doc().set({
+            search: search1,
+            })
+            .then(() => {
+            console.log("Document successfully written!");
+            })
+            .catch((error) => {
+            console.error("Error writing document: ", error);
+            });
+        document.getElementById("s").value=search1;
+        document.getElementById("s").addEventListener("keyup",function(event) 
+            {
+            
+                    if (event.keyCode === 13) 
+                    {
+                        if(document.getElementById("s").value != "")
+                        {
+                            event.preventDefault();
+                            searching()
+                    
+                        }
+                }
+             
+            });
+    
+            function searching()
+            {
+                if(document.getElementById("s").value != "")
+                {
+                    location.href=('main.html');
+                    var search=document.getElementById("s").value
+                    console.log(search)
+                    localStorage.setItem("name",search)
+                }
+                
+            }
+            var uobj;
+            var docRef = db.collection("users").doc(uid);
+                docRef.get().then((doc) => {
+                    if (doc.exists) {
+                        uobj=doc.data();
+                        console.log(uobj.name);
+                        console.log(uobj.email);
+                        console.log(uobj.profileurl);
+                        document.getElementById("p").src=uobj.profileurl;
+                       
+                    } else {
+                        
+                        console.log("No such document!");
+                    }
+                }).catch((error) => {
+                    console.log("Error getting document:", error);
+                });
+
+        const API_KEY="AIzaSyC9QRd3nieB5nY_feLIbRd2gbSowfVG3z4";
+        const CONTEXT_KEY="2f703de2a9b36fba8";
+        // http://api.serpstack.com/search?access_key=7a11c3457ceba8a7e8da239b1eb7a6f3&query=${search1}
+        //   https://serpapi.com/search.json?engine=google&q=amazon&api_key=88c4025bfe23e361ca303c1e8b569d608da9b3054034b01b7af4061e367f5b82
+     fetch(`http://api.serpstack.com/search?access_key=a10b1e1f4d69cef8bde23fbc4612354d&query=${search1}`)
+    .then((response) => response.json())
+    .then((results) =>  
+    {
+      var items1=results.organic_results;
+        console.log(items1);
+      var resultsHTML=""   
+      items1.forEach(element => {
+
+        resultsHTML+=`  <div class="result" >
+                <div class="link">
+                   <a href="${element.url}"  >${element.displayed_url}</a>
+                </div>
+                <div class="title">
+                    <a href="${element.url} >${element.title}</a>
+                </div>
+                <div class="ds">
+                    ${element.snippet}
+                </div>
+            </div>`
+      });
+        console.log(results.items);
+        document.getElementById("appb").innerHTML=resultsHTML;
+    })
+
+    // https://www.googleapis.com/customsearch/v1?key=AIzaSyC9QRd3nieB5nY_feLIbRd2gbSowfVG3z4&cx=2f703de2a9b36fba8&q=google
+    // fetch(`https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CONTEXT_KEY}&q=${search}`)
+    // .then((response) => response.json())
+    // .then((results) =>  
+    // {
+    //   var items1=results.items;
+    //     console.log(items1);
+    //   var resultsHTML=""   
+    //   items1.forEach(element => {
+
+    //     resultsHTML+=`  <div class="result" >
+    //             <div class="link">
+    //                <a href="${element.link}" >${element.formattedUrl}</a>
+    //             </div>
+    //             <div class="title">
+    //                 <a href="${element.link}">${element.title}</a>
+    //             </div>
+    //             <div class="ds">
+    //                 ${element.snippet}
+    //             </div>
+    //         </div>`
+    //   });
+    //   console.log(results.items);
+    //     document.getElementById("appb").innerHTML=resultsHTML;
+    // })
+    </script>
+</body>
+<!-- https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CONTEXT_KEY}&q=${search} -->
+</html>
